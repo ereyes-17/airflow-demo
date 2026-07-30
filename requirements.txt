@@ -1,2 +1,7 @@
 requests
 python-dotenv
+psycopg2-binary
+# Airflow providers
+apache-airflow-providers-http
+apache-airflow-providers-postgres
+apache-airflow-providers-celery
