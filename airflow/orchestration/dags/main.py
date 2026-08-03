@@ -34,3 +34,17 @@ with DAG(
 
     # define deps
     playlist_id >> video_ids >> extracted_data >> save_to_json_task
+
+from datawarehouse.dwh import staging_table, core_table
+
+with DAG(
+    dag_id="update_db",
+    default_args=default_args,
+    description="DAG to process youtube json data into datawarehouse",
+    schedule="0 15 * * *",
+    catchup=False
+) as dag:
+    update_staging = staging_table()
+    update_core = core_table()
+
+    update_staging >> update_core
