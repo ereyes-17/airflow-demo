@@ -49,7 +49,6 @@ jobs:
       CHANNEL_HANDLE: ${{ vars.CHANNEL_HANDLE }}
       DOCKERHUB_NAMESPACE: ${{ vars.DOCKERHUB_NAMESPACE }}
       DOCKERHUB_REPOSITORY: ${{ vars.DOCKERHUB_REPOSITORY }}
-      IMAGE_TAG: ${{ vars.IMAGE_TAG }}
       POSTGRES_CONN_USERNAME: ${{ secrets.POSTGRES_CONN_USERNAME }}
       POSTGRES_CONN_PASSWORD: ${{ secrets.POSTGRES_CONN_PASSWORD }}
       POSTGRES_CONN_HOST: ${{ secrets.POSTGRES_CONN_HOST }}
@@ -80,7 +79,7 @@ jobs:
             docker-compose.yaml
       - name: Setup docker compose
         if: steps.changed-files-test.outputs.any_changed == 'true'
-        run: docker compose up --build -d
+        run: docker compose up -d
       - name: Run unit and integration tests
         if: steps.changed-files-test.outputs.any_changed == 'true'
         run: docker exec airflow-webserver sh -c "pytest tests/ -v"

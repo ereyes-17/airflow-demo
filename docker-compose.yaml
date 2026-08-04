@@ -237,6 +237,7 @@ services:
     <<: *airflow-common
     entrypoint: /bin/bash
     container_name: airflow-init
+    # testing
     command:
       - -c
       - |
