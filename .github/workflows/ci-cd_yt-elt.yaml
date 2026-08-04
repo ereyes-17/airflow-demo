@@ -79,18 +79,18 @@ jobs:
             airflow/include/*
             docker-compose.yaml
       - name: Setup docker compose
-        if: steps.change-files-tests.outputs.any_changes == 'true'
+        if: steps.changed-files-test.outputs.any_changed == 'true'
         run: docker compose up --build -d
       - name: Run unit and integration tests
-        if: steps.change-files-tests.outputs.any_changes == 'true'
-        run: docker exec -t airflow-webserver sh -c "pytest tests/ -v"
+        if: steps.changed-files-test.outputs.any_changed == 'true'
+        run: docker exec airflow-webserver sh -c "pytest tests/ -v"
       - name: Run e2e DAG tests
-        if: steps.change-files-tests.outputs.any_changes == 'true'
+        if: steps.changed-files-test.outputs.any_changed == 'true'
         run: |
-          DAG_NAMES=("produce_json", "update_db", "data_quality")
-          for DAG in "$DAG_NAMES[@]"; do
-            docker exec -it airflow-webserver sh -c "airflow dags test $DAG"
+          DAG_NAMES=("produce_json" "update_db" "data_quality")
+          for DAG in "${DAG_NAMES[@]}"; do
+            docker exec airflow-webserver sh -c "airflow dags test $DAG"
           done
       - name: Tear down docker compose
-        if: steps.change-files-tests.outputs.any_changes == 'true'
+        if: steps.changed-files-test.outputs.any_changed == 'true'
         run: docker compose down -v --remove-orphans
