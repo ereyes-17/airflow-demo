@@ -1,7 +1,11 @@
 requests
 python-dotenv
 psycopg2-binary
-# Airflow providers
-apache-airflow-providers-http
-apache-airflow-providers-postgres
-apache-airflow-providers-celery
+# Airflow core - must be installed first to avoid Airflow 3.x / Task SDK transitive packages
+apache-airflow==2.9.2
+# Airflow providers - pinned to Airflow 2.9.2 / Python 3.10 constraints
+apache-airflow-providers-http==4.11.1
+apache-airflow-providers-postgres==5.11.1
+apache-airflow-providers-celery==3.7.2
+soda-core-postgres==3.3.14
+pytest==8.3.2

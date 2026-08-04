@@ -1,7 +1,6 @@
 # Airflow
 airflow/logs/
-airflow/orchestration/logs
-airflow/orchestration/data
+airflow/data/
 airflow.db
 airflow_db.sqlite
 unittests.cfg
