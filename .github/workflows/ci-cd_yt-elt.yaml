@@ -75,8 +75,8 @@ jobs:
         uses: tj-actions/changed-files@v45
         with:
           files: |
-            dags/*
-            include/*
+            airflow/dags/*
+            airflow/include/*
             docker-compose.yaml
       - name: Setup docker compose
         if: steps.change-files-tests.outputs.any_changes == 'true'
