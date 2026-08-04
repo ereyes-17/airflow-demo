@@ -32,8 +32,8 @@ def get_playlist_id() -> str:
         channel_playlist_id = channel_items["contentDetails"]["relatedPlaylists"]["uploads"]
 
         return channel_playlist_id
-    except requests.exceptions.RequestException as e:
-        raise e
+    except requests.exceptions.RequestException as re:
+        raise re
 
 @task
 def get_video_ids(playlist_id: str) -> list[str]:
