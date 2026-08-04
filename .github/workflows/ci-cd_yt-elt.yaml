@@ -103,7 +103,7 @@ jobs:
       - name: Run unit and integration tests
         if: steps.changed-files-test.outputs.any_changed == 'true'
         run: |
-          docker exec airflow-webserver sh -c "mkdir -p /opt/airflow/logs/dag_processor_manager /opt/airflow/logs/scheduler"
+          docker exec -u root airflow-webserver sh -c "mkdir -p /opt/airflow/logs/dag_processor_manager /opt/airflow/logs/scheduler && chown -R ${AIRFLOW_UID}:0 /opt/airflow/logs"
           docker exec airflow-webserver sh -c "pytest tests/ -v"
       - name: Run e2e DAG tests
         if: steps.changed-files-test.outputs.any_changed == 'true'
