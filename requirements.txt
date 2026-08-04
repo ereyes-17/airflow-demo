@@ -8,4 +8,4 @@ apache-airflow-providers-http==4.11.1
 apache-airflow-providers-postgres==5.11.1
 apache-airflow-providers-celery==3.7.2
 soda-core-postgres==3.3.14
-pytest==8.3.3
+pytest==8.3.2
