@@ -32,14 +32,14 @@ jobs:
         if: steps.changed-files-build.outputs.any_changed == 'true'
         uses: docker/login-action@v3
         with:
-          username: ${{vars.DOCKERHUB_USERNAME}}
-          password: ${{secrets.DOCKERHUB_PASSWORD}}
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build and push Docker image
         if: steps.changed-files-build.outputs.any_changed == 'true'
         run: |
           docker buildx build --push \
-          --tag ${{vars.DOCKERHUB_NAMESPACE}}/${{vars.DOCKERHUB_REPOSITORY}}:latest \
-          --tag ${{vars.DOCKERHUB_NAMESPACE}}/${{vars.DOCKERHUB_REPOSITORY}}:${{github.sha}} \
+          --tag ${{ vars.DOCKERHUB_NAMESPACE }}/${{ vars.DOCKERHUB_REPOSITORY }}:latest \
+          --tag ${{ vars.DOCKERHUB_NAMESPACE }}/${{ vars.DOCKERHUB_REPOSITORY }}:${{ github.sha }} \
           .
   unit-and-integration-and-e2e-tests:
     runs-on: ubuntu-latest
@@ -49,7 +49,6 @@ jobs:
       CHANNEL_HANDLE: ${{ vars.CHANNEL_HANDLE }}
       DOCKERHUB_NAMESPACE: ${{ vars.DOCKERHUB_NAMESPACE }}
       DOCKERHUB_REPOSITORY: ${{ vars.DOCKERHUB_REPOSITORY }}
-      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
       IMAGE_TAG: ${{ vars.IMAGE_TAG }}
       POSTGRES_CONN_USERNAME: ${{ secrets.POSTGRES_CONN_USERNAME }}
       POSTGRES_CONN_PASSWORD: ${{ secrets.POSTGRES_CONN_PASSWORD }}
