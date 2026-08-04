@@ -77,12 +77,10 @@ jobs:
             airflow/dags/*
             airflow/include/*
             docker-compose.yaml
-      - name: Setup docker compose
-        if: steps.changed-files-test.outputs.any_changed == 'true'
-        run: docker compose up -d
-      - name: Wait for and print init logs
+      - name: Setup docker compose and wait for init
         if: steps.changed-files-test.outputs.any_changed == 'true'
         run: |
+          docker compose up -d
           docker compose logs -f airflow-init &
           echo "Waiting for airflow-init to complete..."
           for i in {1..60}; do
@@ -92,11 +90,11 @@ jobs:
               break
             elif [[ "${status}" != "" && "${status}" != "0" ]]; then
               echo "airflow-init failed with exit code ${status}"
+              docker logs airflow-init --tail 300
               exit 1
             fi
             sleep 5
           done
-          docker logs airflow-init --tail 200
       - name: Run unit and integration tests
         if: steps.changed-files-test.outputs.any_changed == 'true'
         run: docker exec airflow-webserver sh -c "pytest tests/ -v"
