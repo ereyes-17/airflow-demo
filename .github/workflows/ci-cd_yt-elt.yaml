@@ -66,6 +66,7 @@ jobs:
       AIRFLOW_WWW_USER_USERNAME: ${{ vars.AIRFLOW_WWW_USER_USERNAME }}
       AIRFLOW_WWW_USER_PASSWORD: ${{ secrets.AIRFLOW_WWW_USER_PASSWORD }}
       FERNET_KEY: ${{ secrets.FERNET_KEY }}
+      AIRFLOW__LOGGING__LOGGING_CONFIG_CLASS: ""
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -101,7 +102,9 @@ jobs:
           done
       - name: Run unit and integration tests
         if: steps.changed-files-test.outputs.any_changed == 'true'
-        run: docker exec airflow-webserver sh -c "pytest tests/ -v"
+        run: |
+          docker exec airflow-webserver sh -c "mkdir -p /opt/airflow/logs/dag_processor_manager /opt/airflow/logs/scheduler"
+          docker exec airflow-webserver sh -c "pytest tests/ -v"
       - name: Run e2e DAG tests
         if: steps.changed-files-test.outputs.any_changed == 'true'
         run: |
